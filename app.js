@@ -117,8 +117,12 @@ function navigatePage(pageName) {
     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
     event.target.classList.add('active');
     
-    if (pageName === 'collection' && currentProductIndex === undefined) {
+    if (pageName === 'collection') {
         displayProduct();
+        renderCartItems();
+    }
+    if (pageName === 'cart') {
+        renderCartItems();
     }
 }
 
@@ -152,7 +156,9 @@ function renderCartItems() {
     
     if (cart.length === 0) {
         cartItemsDiv.innerHTML = '<p class="empty-message">Your cart is empty</p>';
-        document.getElementById('cartSummary').style.display = 'none';
+        if (document.getElementById('cartSummary')) {
+            document.getElementById('cartSummary').style.display = 'none';
+        }
         return;
     }
     
@@ -171,7 +177,9 @@ function renderCartItems() {
         </div>
     `).join('');
     
-    document.getElementById('cartSummary').style.display = 'block';
+    if (document.getElementById('cartSummary')) {
+        document.getElementById('cartSummary').style.display = 'block';
+    }
     updateCartTotals();
 }
 
@@ -226,48 +234,49 @@ function renderCheckoutItems() {
     `).join('');
 }
 
-document.getElementById('checkoutForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.10;
-    const total = subtotal + tax;
-    
-    const orderData = {
-        orderId: `MK-${Date.now()}`,
-        customer: {
-            name: e.target.elements[0].value,
-            email: e.target.elements[1].value,
-            phone: e.target.elements[2].value,
-            address: e.target.elements[3].value,
-            city: e.target.elements[4].value,
-            postalCode: e.target.elements[5].value
-        },
-        items: cart,
-        subtotal,
-        tax,
-        total
-    };
-    
-    // Save order
-    const orders = JSON.parse(localStorage.getItem('mucoki_orders')) || [];
-    orders.push(orderData);
-    localStorage.setItem('mucoki_orders', JSON.stringify(orders));
-    
-    // Show success
-    document.getElementById('checkoutModal').classList.remove('show');
-    document.getElementById('successMessage').innerHTML = `
-        <strong>Order ID: ${orderData.orderId}</strong><br><br>
-        Total: $${total.toFixed(2)}<br>
-        Confirmation sent to: ${orderData.customer.email}<br>
-        Also notified: contactmucoki@gmail.com
-    `;
-    document.getElementById('successModal').classList.add('show');
-    
-    cart = [];
-    saveCart();
-    updateCartCount();
-});
+const checkoutForm = document.getElementById('checkoutForm');
+if (checkoutForm) {
+    checkoutForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const tax = subtotal * 0.10;
+        const total = subtotal + tax;
+        
+        const orderData = {
+            orderId: `MK-${Date.now()}`,
+            customer: {
+                name: e.target.elements[0].value,
+                email: e.target.elements[1].value,
+                phone: e.target.elements[2].value,
+                address: e.target.elements[3].value,
+                city: e.target.elements[4].value,
+                postalCode: e.target.elements[5].value
+            },
+            items: cart,
+            subtotal,
+            tax,
+            total
+        };
+        
+        const orders = JSON.parse(localStorage.getItem('mucoki_orders')) || [];
+        orders.push(orderData);
+        localStorage.setItem('mucoki_orders', JSON.stringify(orders));
+        
+        document.getElementById('checkoutModal').classList.remove('show');
+        document.getElementById('successMessage').innerHTML = `
+            <strong>Order ID: ${orderData.orderId}</strong><br><br>
+            Total: $${total.toFixed(2)}<br>
+            Confirmation sent to: ${orderData.customer.email}<br>
+            Also notified: contactmucoki@gmail.com
+        `;
+        document.getElementById('successModal').classList.add('show');
+        
+        cart = [];
+        saveCart();
+        updateCartCount();
+    });
+}
 
 function closeSuccess() {
     document.getElementById('successModal').classList.remove('show');

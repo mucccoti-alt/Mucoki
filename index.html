@@ -3,106 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M Ú C O K I - Premium 22K Gold Jewelry</title>
+    <title>M Ú C O K I - Luxury 22K Gold Jewelry</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <div class="navbar-content">
+            <div class="navbar-brand">
                 <h1 class="logo">M Ú C O K I</h1>
-                <div class="nav-buttons">
-                    <button class="cart-btn" id="cartBtn">
-                        🛒 Cart <span id="cartCount" class="cart-count">0</span>
-                    </button>
-                </div>
+                <p class="tagline">Luxury 22K Gold</p>
             </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active" onclick="navigatePage('home'); return false;">Home</a></li>
+                <li><a href="#" class="nav-link" onclick="navigatePage('collection'); return false;">Collection</a></li>
+                <li><a href="#" class="nav-link" onclick="navigatePage('about'); return false;">About</a></li>
+                <li><a href="#" class="nav-link" onclick="navigatePage('cart'); return false;">Cart <span id="cartCount" class="cart-count">0</span></a></li>
+                <li><a href="#" class="nav-link" onclick="navigatePage('contact'); return false;">Contact</a></li>
+            </ul>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="container">
-            <h2>M Ú C O K I</h2>
-            <p>Premium 22K Gold Jewelry</p>
+    <!-- Page Container -->
+    <div id="pages-container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <section class="hero">
+                <div class="hero-content">
+                    <h2>M Ú C O K I</h2>
+                    <p>Timeless Luxury in Pure 22K Gold</p>
+                    <button class="cta-btn" onclick="navigatePage('collection'); return false;">Explore Collection</button>
+                </div>
+            </section>
         </div>
-    </header>
 
-    <main class="container">
-        <section class="products">
-            <h2>Collection</h2>
-            <div id="productsGrid" class="products-grid"></div>
-        </section>
-    </main>
+        <!-- COLLECTION PAGE -->
+        <div id="collection" class="page">
+            <section class="collection-section">
+                <div class="product-showcase">
+                    <div class="product-image-container">
+                        <img id="productImage" src="" alt="Product" class="product-image">
+                    </div>
+                    <div class="product-details-container">
+                        <h2 id="productName" class="product-name"></h2>
+                        <p id="productCategory" class="product-category"></p>
+                        <div class="product-specs">
+                            <p><span class="label">Weight:</span> <span id="productWeight"></span></p>
+                            <p><span class="label">Material:</span> <span id="productMaterial"></span></p>
+                            <p><span class="label">Price:</span> <span id="productPrice" class="price"></span></p>
+                        </div>
+                        <p id="productDescription" class="product-description"></p>
+                        
+                        <div class="product-actions">
+                            <button class="nav-product-btn prev" onclick="previousProduct()">← Previous</button>
+                            <button class="add-cart-btn" onclick="addToCart(currentProductIndex)">Add to Cart</button>
+                            <button class="nav-product-btn next" onclick="nextProduct()">Next →</button>
+                        </div>
+                        
+                        <div class="product-counter">
+                            <span id="productCounter"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-    <!-- Cart Modal -->
-    <div id="cartModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Shopping Cart</h2>
-            <div id="cartItems" class="cart-items"></div>
-            <div class="cart-summary">
-                <div class="summary-row">
-                    <span>Subtotal:</span>
-                    <span id="subtotal">$0.00</span>
+        <!-- ABOUT PAGE -->
+        <div id="about" class="page">
+            <section class="about-section">
+                <div class="about-content">
+                    <h2>About M Ú C O K I</h2>
+                    <p>Since our founding, M Ú C O K I has been dedicated to creating exceptional luxury jewelry. Each piece is meticulously crafted from pure 22K gold, representing the pinnacle of fine craftsmanship and timeless elegance.</p>
+                    
+                    <h3>Our Commitment</h3>
+                    <ul class="about-list">
+                        <li>100% Pure 22K Gold - No alloys, no compromises</li>
+                        <li>Premium Craftsmanship - Handcrafted excellence</li>
+                        <li>Hallmarked & Certified - Authentic quality assured</li>
+                        <li>Secure Packaging - Insured delivery</li>
+                        <li>Money Back Guarantee - Your satisfaction guaranteed</li>
+                    </ul>
+
+                    <h3>Why Choose M Ú C O K I</h3>
+                    <p>We believe luxury should be timeless. Every M Ú C O K I creation is designed to transcend trends and become part of your family's legacy. Our pieces are not just jewelry—they are investments in beauty and quality that endure for generations.</p>
                 </div>
-                <div class="summary-row">
-                    <span>Tax (10%):</span>
-                    <span id="tax">$0.00</span>
+            </section>
+        </div>
+
+        <!-- CART PAGE -->
+        <div id="cart" class="page">
+            <section class="cart-section">
+                <h2>Your Cart</h2>
+                <div id="cartItems" class="cart-items">
+                    <p class="empty-message">Your cart is empty</p>
                 </div>
-                <div class="summary-row total">
-                    <span>Total:</span>
-                    <span id="total">$0.00</span>
+                <div id="cartSummary" class="cart-summary" style="display:none;">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (10%)</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                    <button class="checkout-btn" onclick="showCheckout()">Proceed to Checkout</button>
                 </div>
-            </div>
-            <button id="checkoutBtn" class="checkout-btn">Proceed to Checkout</button>
+            </section>
+        </div>
+
+        <!-- CONTACT PAGE -->
+        <div id="contact" class="page">
+            <section class="contact-section">
+                <h2>Contact Us</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Get in Touch</h3>
+                        <p><strong>Email:</strong> contactmucoki@gmail.com</p>
+                        <p><strong>Hours:</strong> Monday - Saturday, 10AM - 6PM</p>
+                        <p>For inquiries, orders, or exclusive consultations, please reach out to us.</p>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
+    <!-- CHECKOUT MODAL -->
     <div id="checkoutModal" class="modal">
-        <div class="modal-content checkout-modal">
-            <span class="close">&times;</span>
-            <h2>Checkout</h2>
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeCheckout()">&times;</span>
+            <h2>Secure Checkout</h2>
             
             <div class="checkout-container">
                 <!-- Order Summary -->
-                <div class="order-summary">
+                <div class="checkout-order">
                     <h3>Order Summary</h3>
-                    <div id="checkoutItems" class="checkout-items"></div>
+                    <div id="checkoutItems" class="checkout-items-list"></div>
                     <div class="checkout-totals">
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
+                        <div class="total-row">
+                            <span>Subtotal</span>
                             <span id="checkoutSubtotal">$0.00</span>
                         </div>
-                        <div class="summary-row">
-                            <span>Tax (10%):</span>
+                        <div class="total-row">
+                            <span>Tax (10%)</span>
                             <span id="checkoutTax">$0.00</span>
                         </div>
-                        <div class="summary-row total">
-                            <span>Total Amount:</span>
+                        <div class="total-row final">
+                            <span>Total</span>
                             <span id="checkoutTotal">$0.00</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Payment Information -->
-                <div class="payment-section">
-                    <h3>Payment Information</h3>
-                    <div class="payment-method-display">
-                        <div class="payment-card">
-                            <div class="card-logo">💳</div>
-                            <div class="card-details">
-                                <p class="card-type">M Ú C O K I Card</p>
-                                <p class="card-number">**** **** **** <span id="displayCardNumber">1001</span></p>
-                                <p class="card-holder">Premium Payment</p>
-                            </div>
-                        </div>
-                        <p class="payment-note">✓ Secure Payment Processing</p>
-                    </div>
-
-                    <!-- Customer Information -->
-                    <h3>Shipping Information</h3>
+                <!-- Payment & Shipping -->
+                <div class="checkout-form-container">
                     <form id="checkoutForm" class="checkout-form">
+                        <h3>Shipping Information</h3>
                         <input type="text" placeholder="Full Name" required>
                         <input type="email" placeholder="Email Address" required>
                         <input type="tel" placeholder="Phone Number" required>
@@ -110,32 +169,35 @@
                         <input type="text" placeholder="City" required>
                         <input type="text" placeholder="Postal Code" required>
 
+                        <h3>Payment Details</h3>
+                        <div class="bank-details">
+                            <p><strong>Card Number:</strong> 4890010100591001</p>
+                            <p><strong>Display:</strong> **** **** **** 1001</p>
+                            <p class="secure-note">✓ Secure Payment Processing</p>
+                        </div>
+
                         <label class="checkbox">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" required>
                             I agree to the terms and conditions
                         </label>
 
-                        <button type="submit" class="pay-btn">Complete Payment</button>
-                        <button type="button" class="cancel-btn" id="cancelCheckout">Cancel</button>
+                        <button type="submit" class="submit-btn">Complete Purchase</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Success Modal -->
+    <!-- SUCCESS MODAL -->
     <div id="successModal" class="modal">
-        <div class="modal-content success-modal">
+        <div class="modal-content success">
             <div class="success-icon">✓</div>
-            <h2>Payment Successful!</h2>
+            <h2>Order Confirmed</h2>
             <p id="successMessage"></p>
-            <p class="order-details">Your order has been confirmed.</p>
-            <button id="continueShoppingBtn" class="continue-btn">Continue Shopping</button>
+            <button class="close-success-btn" onclick="closeSuccess()">Continue Shopping</button>
         </div>
     </div>
 
-    <script src="products.js"></script>
-    <script src="cart.js"></script>
-    <script src="checkout.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
