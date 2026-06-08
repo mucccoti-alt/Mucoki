@@ -187,7 +187,7 @@ function removeFromCart(index) {
 
 function calculateTotals() {
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.10;
+    const tax = subtotal * 0.00;
     const total = subtotal + tax;
     
     return { subtotal, tax, total };
